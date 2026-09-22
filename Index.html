@@ -1,149 +1,366 @@
-<index html>  
-<html lang="zh-CN">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>全球法西斯与民族主义指数地图</title>  
-    <!-- 引入 ECharts 地图库 -->  
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>  
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/js/world.js"></script>  
-    <style>  
-        * {  
-            box-sizing: border-box;  
-            margin: 0;  
-            padding: 0;  
-        }  
-        body {  
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;  
-            background-color: #121212;  
-            color: #e0e0e0;  
-            display: flex;  
-            flex-direction: column;  
-            align-items: center;  
-            min-height: 100vh;  
-            padding: 20px;  
-        }  
-        header {  
-            text-align: center;  
-            margin-bottom: 20px;  
-        }  
-        h1 {  
-            font-size: 2rem;  
-            color: #ffffff;  
-            margin-bottom: 8px;  
-        }  
-        p.subtitle {  
-            font-size: 0.95rem;  
-            color: #a0a0a0;  
-            max-width: 700px;  
-        }  
-        #map-container {  
-            width: 100%;  
-            max-width: 1100px;  
-            height: 600px;  
-            background: #1e1e1e;  
-            border-radius: 12px;  
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);  
-            overflow: hidden;  
-        }  
-        @media (max-width: 768px) {  
-            #map-container {  
-                height: 450px;  
-            }  
-            h1 {  
-                font-size: 1.5rem;  
-            }  
-        }  
-    </style>  
-</head>  
-<body>  
-  
-    <header>  
-        <h1>全球法西斯与极端民族主义指数</h1>  
-        <p class="subtitle">Realistically presenting the fascism and ultranationalism index across regions of the world.</p>  
-    </header>  
-  
-    <div id="map-container"></div>  
-  
-    <script>  
-        const chartDom = document.getElementById('map-container');  
-        const myChart = echarts.init(chartDom, 'dark');  
-  
-        // 示例数据（数值范围 0 - 100）  
-        const mapData = [  
-            { name: 'United States', value: 42 },  
-            { name: 'Russia', value: 85 },  
-            { name: 'China', value: 65 },  
-            { name: 'Germany', value: 30 },  
-            { name: 'France', value: 38 },  
-            { name: 'United Kingdom', value: 35 },  
-            { name: 'India', value: 72 },  
-            { name: 'Brazil', value: 50 },  
-            { name: 'Japan', value: 40 },  
-            { name: 'Italy', value: 45 },  
-            { name: 'Turkey', value: 78 },  
-            { name: 'Hungary', value: 70 },  
-            { name: 'Poland', value: 55 }  
-        ];  
-  
-        const option = {  
-            backgroundColor: '#1e1e1e',  
-            title: {  
-                text: '指数分布图 (0-100)',  
-                left: '20',  
-                top: '20',  
-                textStyle: {  
-                    color: '#ccc',  
-                    fontSize: 14  
-                }  
-            },  
-            tooltip: {  
-                trigger: 'item',  
-                formatter: function (params) {  
-                    const value = params.value ? params.value : '暂无数据';  
-                    return `<strong>${params.name}</strong><br/>法西斯/民族主义指数: <span style="color:#ff4d4f;font-weight:bold;">${value}</span>`;  
-                }  
-            },  
-            visualMap: {  
-                min: 0,  
-                max: 100,  
-                text: ['高', '低'],  
-                realtime: false,  
-                calculable: true,  
-                inRange: {  
-                    color: ['#313695', '#4575b4', '#74add1', '#fdae61', '#f46d43', '#d73027', '#a50026']  
-                },  
-                textStyle: {  
-                    color: '#fff'  
-                },  
-                bottom: '30',  
-                left: '30'  
-            },  
-            series: [  
-                {  
-                    name: '法西斯指数',  
-                    type: 'map',  
-                    map: 'world',  
-                    roam: true,  
-                    emphasis: {  
-                        label: {  
-                            show: true,  
-                            color: '#fff'  
-                        },  
-                        itemStyle: {  
-                            areaColor: '#ffd700'  
-                        }  
-                    },  
-                    data: mapData  
-                }  
-            ]  
-        };  
-  
-        myChart.setOption(option);  
-  
-        window.addEventListener('resize', function() {  
-            myChart.resize();  
-        });  
-    </script>  
-</body>  
-</html>  
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亚洲极权与民族主义指数</title>
+    <!-- 引入 ECharts 核心库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <!-- 引入 世界地图数据 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: #151c2c;
+            --border-color: #1e293b;
+            --accent-color: #3b82f6;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        p.subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        #map-container {
+            width: 100%;
+            height: 600px;
+            background: var(--panel-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 70px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #2563eb;
+        }
+
+        .legend-tip {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>亚洲民族主义与法西斯主义指数分布图</h1>
+            <p class="subtitle">Asia Nationalism & Authoritarianism Severity Index Monitor</p>
+        </header>
+
+        <div class="main-layout">
+            <!-- 左侧：亚洲区域地图 -->
+            <div id="map-container"></div>
+
+            <!-- 右侧：投稿/数据修改入口 -->
+            <div class="side-panel">
+                <div class="card">
+                    <h2>数据更新/投稿入口</h2>
+                    <form id="submission-form" onsubmit="handleFormSubmit(event)">
+                        <div class="form-group">
+                            <label for="country-select">选择国家/地区：</label>
+                            <select id="country-select" required>
+                                <option value="">请选择...</option>
+                                <option value="China">中国 (China)</option>
+                                <option value="Japan">日本 (Japan)</option>
+                                <option value="South Korea">韩国 (South Korea)</option>
+                                <option value="India">印度 (India)</option>
+                                <option value="Russia">俄罗斯（亚洲部分） (Russia)</option>
+                                <option value="Turkey">土耳其 (Turkey)</option>
+                                <option value="Iran">伊朗 (Iran)</option>
+                                <option value="North Korea">朝鲜 (North Korea)</option>
+                                <option value="Vietnam">越南 (Vietnam)</option>
+                                <option value="Thailand">泰国 (Thailand)</option>
+                                <option value="Indonesia">印度尼西亚 (Indonesia)</option>
+                                <option value="Pakistan">巴基斯坦 (Pakistan)</option>
+                                <option value="Saudi Arabia">沙特阿拉伯 (Saudi Arabia)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="index-value">修改/设定指数 (0 - 100)：</label>
+                            <input type="number" id="index-value" min="0" max="100" placeholder="例如: 75" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="submit-reason">投稿依据 / 说明：</label>
+                            <textarea id="submit-reason" placeholder="请输入相关事件或评估依据..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit">更新地图预览 / 提交</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>关于颜色与指数</h2>
+                    <p class="legend-tip">
+                        • <b>指数 0-20：</b> 蓝色（低风险/极低极权）<br>
+                        • <b>指数 20-50：</b> 黄色（中度民族主义倾向）<br>
+                        • <b>指数 50-80：</b> 橙色（高风险/强威权主义）<br>
+                        • <b>指数 80-100：</b> 深红/紫色（极高风险/法西斯主义倾向）<br><br>
+                        可以在代码中修改 <code>visualMap.inRange.color</code> 来自由调整深浅颜色的渐变方案。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chartDom = document.getElementById('map-container');
+        const myChart = echarts.init(chartDom, 'dark');
+
+        // 国家英文到中文的映射
+        const nameMap = {
+            'China': '中国',
+            'Japan': '日本',
+            'South Korea': '韩国',
+            'North Korea': '朝鲜',
+            'India': '印度',
+            'Pakistan': '巴基斯坦',
+            'Russia': '俄罗斯',
+            'Turkey': '土耳其',
+            'Iran': '伊朗',
+            'Saudi Arabia': '沙特阿拉伯',
+            'Vietnam': '越南',
+            'Thailand': '泰国',
+            'Indonesia': '印度尼西亚',
+            'Mongolia': '蒙古',
+            'Kazakhstan': '哈萨克斯坦',
+            'Philippines': '菲律宾',
+            'Myanmar': '缅甸',
+            'Malaysia': '马来西亚'
+        };
+
+        // 初始地图数据（国家英文名与指数 0-100）
+        let mapData = [
+            { name: 'China', value: 75 },
+            { name: 'Japan', value: 25 },
+            { name: 'South Korea', value: 35 },
+            { name: 'North Korea', value: 98 },
+            { name: 'India', value: 72 },
+            { name: 'Russia', value: 88 },
+            { name: 'Turkey', value: 78 },
+            { name: 'Iran', value: 85 },
+            { name: 'Saudi Arabia', value: 65 },
+            { name: 'Vietnam', value: 60 },
+            { name: 'Thailand', value: 50 },
+            { name: 'Indonesia', value: 45 },
+            { name: 'Pakistan', value: 70 }
+        ];
+
+        // 地图配置（聚焦亚洲区域）
+        function getOption() {
+            return {
+                backgroundColor: '#151c2c',
+                title: {
+                    text: '亚洲极权与民族主义严重程度地图',
+                    subtext: '拖拽可移动，滚轮可缩放',
+                    left: '20',
+                    top: '20',
+                    textStyle: { color: '#f8fafc', fontSize: 16 },
+                    subtextStyle: { color: '#64748b', fontSize: 12 }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        const val = params.value !== undefined && !isNaN(params.value) ? params.value : '暂无数据';
+                        const cName = nameMap[params.name] || params.name;
+                        return `<strong>${cName} (${params.name})</strong><br/>民族主义/极权指数: <span style="color:#ef4444;font-weight:bold;">${val}</span>`;
+                    }
+                },
+                // 颜色与数值控制（修改这里的 inRange 数组可以改变颜色的深浅和配色）
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    left: '20',
+                    bottom: '20',
+                    text: ['高指数 (100)', '低指数 (0)'],
+                    textStyle: { color: '#94a3b8' },
+                    realtime: true,
+                    calculable: true,
+                    // 颜色颜色深浅数组：从低指数到高指数的渐变颜色
+                    inRange: {
+                        color: ['#38bdf8', '#fbbf24', '#f97316', '#ef4444', '#701a75']
+                    }
+                },
+                geo: {
+                    map: 'world',
+                    roam: true,
+                    // 通过 center 和 zoom 属性限定聚焦在亚洲区域
+                    center: [100.0, 35.0], 
+                    zoom: 2.5,
+                    nameMap: nameMap,
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#1e293b',
+                            borderColor: '#334155',
+                            borderWidth: 0.8
+                        },
+                        emphasis: {
+                            areaColor: '#3b82f6',
+                            borderColor: '#ffffff',
+                            borderWidth: 1.5,
+                            label: { show: false }
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Asia Index',
+                        type: 'map',
+                        geoIndex: 0,
+                        data: mapData
+                    }
+                ]
+            };
+        }
+
+        // 初始化渲染
+        myChart.setOption(getOption());
+
+        // 表单提交处理：用于预览动态修改数值和颜色深浅
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const country = document.getElementById('country-select').value;
+            const newValue = parseInt(document.getElementById('index-value').value, 10);
+
+            if (!country || isNaN(newValue)) return;
+
+            // 寻找或新增数据项
+            const existing = mapData.find(item => item.name === country);
+            if (existing) {
+                existing.value = newValue;
+            } else {
+                mapData.push({ name: country, value: newValue });
+            }
+
+            // 重新刷新地图
+            myChart.setOption({
+                series: [{
+                    data: mapData
+                }]
+            });
+
+            alert(`${nameMap[country] || country} 的指数已更新为 ${newValue}！地图颜色已相应变化。`);
+            document.getElementById('submission-form').reset();
+        }
+
+        // 自适应屏幕大小
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html>
