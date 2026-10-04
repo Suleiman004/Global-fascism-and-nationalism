@@ -102,14 +102,17 @@
                 </div>
                 
                 <div>
-                    <label class="block text-xs text-textmuted mb-1">所属党派 / 身份</label>
-                    <select id="new-party" required class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
-                        <option value="无党派人士">无党派人士</option>
-                        <option value="中国共产党">中国共产党</option>
-                        <option value="各民主党派">各民主党派</option>
-                        <option value="海外民主党派/新政党">海外民主党派 / 新政党</option>
-                    </select>
-                </div>
+    <label class="block text-xs text-textmuted mb-1">所属党派 / 身份</label>
+    <select id="new-party" required onchange="toggleCustomPartyInput()" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent mb-2">
+        <option value="无党派人士">无党派人士</option>
+        <option value="中国共产党">中国共产党</option>
+        <option value="各民主党派">各民主党派</option>
+        <option value="海外民主党派/新政党">海外民主党派 / 新政党</option>
+        <option value="CUSTOM">+ 自定义党派名称...</option>
+    </select>
+    <input type="text" id="custom-party-name" placeholder="请输入自定义党派名称" class="hidden w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
+</div>
+
 
                 <div>
                     <label class="block text-xs text-textmuted mb-1">竞选主张 / 简介</label>
