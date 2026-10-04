@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>亚洲政治议题与领导人意向民意表决</title>
-    <!-- Tailwind CSS 样式库 -->
+    <title>中国大陆海外匿名选举平台</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        darkbg: '#0b0f19',
-                        panelbg: '#151c2c',
+                        darkbg: '#0a0e17',
+                        panelbg: '#121824',
                         bordercolor: '#1e293b',
                         accent: '#3b82f6',
-                        textmain: '#e2e8f0',
+                        accenthover: '#2563eb',
+                        textmain: '#f1f5f9',
                         textmuted: '#94a3b8'
                     }
                 }
@@ -24,135 +25,224 @@
     </script>
     <style>
         body {
-            background-color: #0b0f19;
-            color: #e2e8f0;
+            background-color: #0a0e17;
+            color: #f1f5f9;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        /* Custom scrollbar for comments */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0e17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- 顶部导航 -->
-    <header class="border-b border-bordercolor bg-panelbg/80 backdrop-blur sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <header class="border-b border-bordercolor bg-panelbg/90 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <div class="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
-                <h1 class="text-xl font-bold tracking-wide text-textmain">民意表达与表决平台</h1>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wide text-textmain">中国大陆海外匿名选举平台</h1>
+                    <p class="text-[11px] text-textmuted">民间自由意向表决与民意表达系统</p>
+                </div>
             </div>
             <div>
-                <button id="admin-btn" onclick="openAdminModal()" class="px-4 py-2 text-sm bg-accent/20 hover:bg-accent/40 text-accent border border-accent/40 rounded-lg transition duration-200">
-                    管理员登录
+                <button id="admin-btn" onclick="openAdminModal()" class="px-4 py-2 text-xs font-medium bg-accent/20 hover:bg-accent/40 text-accent border border-accent/40 rounded-lg transition duration-200 flex items-center gap-1.5">
+                    <span>🔐</span> <span id="admin-btn-text">管理员登录</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- 主体区域 -->
-    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
         
-        <!-- 统计概览条 -->
-        <div class="bg-panelbg border border-bordercolor rounded-xl p-6 mb-8 flex flex-wrap justify-between items-center gap-4">
+        <!-- Dashboard Summary -->
+        <div class="bg-panelbg border border-bordercolor rounded-2xl p-6 mb-8 flex flex-wrap justify-between items-center gap-6 shadow-xl">
             <div>
-                <h2 class="text-2xl font-bold text-textmain">下任最高领导人 / 决策层意向表决</h2>
-                <p class="text-sm text-textmuted mt-1">公开民意调查与模拟投票系统（匿名、实时汇总）</p>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accent/20 text-accent border border-accent/30 mb-2">全网实时统计</span>
+                <h2 class="text-2xl font-bold text-textmain tracking-tight">中国大陆下一任国家主席与执政意向民意表决</h2>
+                <p class="text-xs text-textmuted mt-1">支持按不同政治身份与党派检索、参与匿名投表决票及即时公开留言互动</p>
             </div>
-            <div class="flex items-center space-x-6 text-right">
+            <div class="flex items-center space-x-8 text-right bg-darkbg/60 px-6 py-3 rounded-xl border border-bordercolor/60">
                 <div>
-                    <span class="text-xs text-textmuted block">总投票数</span>
-                    <span id="total-votes-count" class="text-2xl font-extrabold text-accent">0</span>
+                    <span class="text-[11px] text-textmuted block">总投票数</span>
+                    <span id="total-votes-count" class="text-2xl font-black text-accent">0</span>
                 </div>
+                <div class="w-px h-8 bg-bordercolor"></div>
                 <div>
-                    <span class="text-xs text-textmuted block">候选人数</span>
-                    <span id="total-candidates-count" class="text-2xl font-extrabold text-textmain">0</span>
+                    <span class="text-[11px] text-textmuted block">参选候选人</span>
+                    <span id="total-candidates-count" class="text-2xl font-black text-textmain">0</span>
                 </div>
             </div>
         </div>
 
-        <!-- 管理员控制面板（登录后显示） -->
-        <div id="admin-panel" class="hidden bg-panelbg border border-accent/50 rounded-xl p-6 mb-8 shadow-lg shadow-accent/5">
-            <div class="flex justify-between items-center mb-4 border-b border-bordercolor pb-3">
+        <div class="bg-panelbg border border-bordercolor rounded-xl p-4 mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 w-full sm:w-auto">
+                <label class="text-xs text-textmuted whitespace-nowrap">按政治党派/身份筛选:</label>
+                <select id="filter-party" onchange="render()" class="bg-darkbg border border-bordercolor rounded-lg px-3 py-2 text-xs text-textmain focus:outline-none focus:border-accent w-full sm:w-64">
+                    <option value="ALL">全部党派与政治身份</option>
+                    <option value="无党派人士">无党派人士</option>
+                    <option value="中国共产党">中国共产党</option>
+                    <option value="中国国民党革命委员会">民革 (中国国民党革命委员会)</option>
+                    <option value="中国民主同盟">民盟 (中国民主同盟)</option>
+                    <option value="中国民主建国会">民建 (中国民主建国会)</option>
+                    <option value="中国民主促进会">民进 (中国民主促进会)</option>
+                    <option value="中国农工民主党">农工党 (中国农工民主党)</option>
+                    <option value="中国致公党">致公党 (中国致公党)</option>
+                    <option value="九三学社">九三学社</option>
+                    <option value="台湾民主自治同盟">台盟 (台湾民主自治同盟)</option>
+                    <option value="海外民主党派/新政党">海外民主党派 / 新政党</option>
+                </select>
+            </div>
+            <button onclick="resetFilters()" class="text-xs text-accent hover:underline flex items-center gap-1">
+                🔄 重置党派筛选
+            </button>
+        </div>
+
+        <div id="admin-panel" class="hidden bg-panelbg border border-accent/50 rounded-2xl p-6 mb-8 shadow-2xl shadow-accent/10">
+            <div class="flex justify-between items-center mb-6 border-b border-bordercolor pb-4">
                 <h3 class="text-lg font-bold text-accent flex items-center gap-2">
-                    <span>⚙️</span> 管理员控制后台
+                    <span>⚙️</span> 管理员控制后台（添加与改动候选人）
                 </h3>
-                <button onclick="logoutAdmin()" class="text-xs px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded hover:bg-red-500/30">
-                    退出管理
+                <button onclick="logoutAdmin()" class="text-xs px-3 py-1.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition">
+                    退出管理模式
                 </button>
             </div>
 
-            <!-- 添加候选人表单 -->
-            <form onsubmit="handleCreateCandidate(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Candidate Creation Form -->
+            <form onsubmit="handleCreateCandidate(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 <div>
-                    <label class="block text-xs text-textmuted mb-1">候选人姓名</label>
-                    <input type="text" id="new-name" required placeholder="例如：张三" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
+                    <label class="block text-xs text-textmuted mb-1.5 font-medium">候选人姓名 <span class="text-red-400">*</span></label>
+                    <input type="text" id="new-name" required placeholder="请输入候选人姓名" class="w-full bg-darkbg border border-bordercolor rounded-lg px-3.5 py-2 text-xs text-textmain focus:outline-none focus:border-accent">
                 </div>
+                
                 <div>
-                    <label class="block text-xs text-textmuted mb-1">竞选头衔 / 政治立场</label>
-                    <input type="text" id="new-title" required placeholder="例如：代表名称/政党观点" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
+                    <label class="block text-xs text-textmuted mb-1.5 font-medium">所属政治党派/身份 <span class="text-red-400">*</span></label>
+                    <div class="space-y-2">
+                        <select id="new-party-select" onchange="toggleCustomPartyInput()" class="w-full bg-darkbg border border-bordercolor rounded-lg px-3.5 py-2 text-xs text-textmain focus:outline-none focus:border-accent">
+                            <option value="无党派人士">无党派人士</option>
+                            <option value="中国共产党">中国共产党</option>
+                            <option value="中国国民党革命委员会">民革 (中国国民党革命委员会)</option>
+                            <option value="中国民主同盟">民盟 (中国民主同盟)</option>
+                            <option value="中国民主建国会">民建 (中国民主建国会)</option>
+                            <option value="中国民主促进会">民进 (中国民主促进会)</option>
+                            <option value="中国农工民主党">农工党 (中国农工民主党)</option>
+                            <option value="中国致公党">致公党 (中国致公党)</option>
+                            <option value="九三学社">九三学社</option>
+                            <option value="台湾民主自治同盟">台盟 (台湾民主自治同盟)</option>
+                            <option value="海外民主党派/新政党">海外民主党派 / 新政党</option>
+                            <option value="CUSTOM">+ 自定义新党派名</option>
+                        </select>
+                        <input type="text" id="new-party-custom" placeholder="请输入自定义党派名称" class="hidden w-full bg-darkbg border border-bordercolor rounded-lg px-3.5 py-2 text-xs text-textmain focus:outline-none focus:border-accent">
+                    </div>
                 </div>
+
                 <div>
-                    <label class="block text-xs text-textmuted mb-1">初始票数</label>
-                    <input type="number" id="new-votes" placeholder="默认 0" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
+                    <label class="block text-xs text-textmuted mb-1.5 font-medium">初始赞成票数</label>
+                    <input type="number" id="new-votes" placeholder="默认为 0" class="w-full bg-darkbg border border-bordercolor rounded-lg px-3.5 py-2 text-xs text-textmain focus:outline-none focus:border-accent">
                 </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-xs text-textmuted mb-1.5 font-medium">竞选纲领与施政主张 <span class="text-red-400">*</span></label>
+                    <input type="text" id="new-title" required placeholder="例如：深化宪政改革、市场经济治理及社会福利保障主张..." class="w-full bg-darkbg border border-bordercolor rounded-lg px-3.5 py-2 text-xs text-textmain focus:outline-none focus:border-accent">
+                </div>
+
                 <div>
-                    <label class="block text-xs text-textmuted mb-1">头像图片 (文件或URL)</label>
-                    <input type="file" id="new-file" accept="image/*" class="w-full text-xs text-textmuted file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-accent/20 file:text-accent">
+                    <label class="block text-xs text-textmuted mb-1.5 font-medium">上传候选人照片</label>
+                    <input type="file" id="new-file" accept="image/*" class="w-full text-xs text-textmuted file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-accent/20 file:text-accent font-medium hover:file:bg-accent/30 cursor-pointer">
                 </div>
-                <div class="md:col-span-2 lg:col-span-4 flex justify-end">
-                    <button type="submit" class="px-6 py-2 bg-accent text-white font-medium rounded-lg hover:bg-blue-600 transition duration-200 text-sm">
-                        + 添加新候选人
+
+                <div class="md:col-span-2 lg:col-span-3 flex justify-end pt-2">
+                    <button type="submit" class="px-6 py-2.5 bg-accent hover:bg-accenthover text-white font-medium rounded-xl transition duration-200 text-xs shadow-lg shadow-accent/20">
+                        + 确定添加该候选人
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- 候选人列表卡片区域 -->
         <div id="candidate-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- 动态生成卡片 -->
+            <!-- Dynamic JavaScript Render Target -->
         </div>
     </main>
 
-    <!-- 底部 -->
-    <footer class="border-t border-bordercolor py-6 text-center text-xs text-textmuted">
-        <p>© 2026 民意表达与去中心化论坛模拟平台 | 仅用于交流与民意测验</p>
+    <footer class="border-t border-bordercolor py-8 text-center text-xs text-textmuted">
+        <p>© 2026 中国大陆海外匿名选举平台 | 仅用于民间自由表达与投票表决模拟</p>
     </footer>
 
-    <!-- 管理员登录弹窗 -->
-    <div id="login-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-        <div class="bg-panelbg border border-bordercolor p-6 rounded-xl w-96 max-w-full shadow-2xl">
-            <h3 class="text-lg font-bold text-textmain mb-4">管理员登录</h3>
-            <p class="text-xs text-textmuted mb-4">请输入管理员密码以进行管理与数据修改。</p>
-            <input type="password" id="admin-pass" placeholder="请输入密码" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain mb-4 focus:outline-none focus:border-accent">
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div class="bg-panelbg border border-bordercolor p-6 rounded-2xl w-96 max-w-full shadow-2xl">
+            <h3 class="text-lg font-bold text-textmain mb-2">管理员鉴权</h3>
+            <p class="text-xs text-textmuted mb-4">请输入后台控制密码以获得改票、添加与删除权限。</p>
+            <input type="password" id="admin-pass" placeholder="输入管理员密码" class="w-full bg-darkbg border border-bordercolor rounded-lg px-3.5 py-2.5 text-xs text-textmain mb-4 focus:outline-none focus:border-accent">
             <div class="flex justify-end space-x-3">
-                <button onclick="closeAdminModal()" class="px-4 py-2 text-xs bg-darkbg text-textmuted border border-bordercolor rounded hover:bg-bordercolor">取消</button>
-                <button onclick="loginAdmin()" class="px-4 py-2 text-xs bg-accent text-white rounded hover:bg-blue-600">确认登录</button>
+                <button onclick="closeAdminModal()" class="px-4 py-2 text-xs bg-darkbg text-textmuted border border-bordercolor rounded-lg hover:bg-bordercolor transition">取消</button>
+                <button onclick="loginAdmin()" class="px-4 py-2 text-xs bg-accent hover:bg-accenthover text-white font-medium rounded-lg transition">验证登录</button>
             </div>
         </div>
     </div>
 
-    <!-- 脚本逻辑 -->
     <script>
-        // 设置你的管理员密码（你可以把单引号里的 我的新密码123 改成你想要的任何密码）
+        // 设置管理员控制密码
         const ADMIN_PASSWORD = '我的新密码123';
 
-        // 初始示例数据
+        // 默认示范候选人（保留党派与匿名留言，彻底去除省份）
         const defaultCandidates = [
-            { id: 1, name: "模拟候选人 A", title: "主张改革与开放路线", votes: 120, photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" },
-            { id: 2, name: "模拟候选人 B", title: "主张传统与稳健路线", votes: 85, photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400" }
+            {
+                id: 1,
+                name: "候选人 A",
+                party: "无党派人士",
+                title: "中国大陆国家主席竞选主张：推进全面依法治国与公民自由基本保障",
+                votes: 245,
+                photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+                comments: [
+                    { text: "支持无党派人士参与执政意向表决，讲求客观理性！", time: "10-04 14:20" },
+                    { text: "纲领务实，赞成依法治国原则。", time: "10-04 15:05" }
+                ]
+            },
+            {
+                id: 2,
+                name: "候选人 B",
+                party: "中国共产党",
+                title: "中国大陆国家主席竞选主张：深化高水平对外开放与宏观经济平稳高质量发展",
+                votes: 188,
+                photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400",
+                comments: [
+                    { text: "经济稳健发展是基本盘。", time: "10-04 12:10" }
+                ]
+            },
+            {
+                id: 3,
+                name: "候选人 C",
+                party: "中国民主同盟",
+                title: "中国大陆国家主席竞选主张：加大科教兴国投入，全面提升社会公共保障制度",
+                votes: 162,
+                photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400",
+                comments: []
+            }
         ];
 
-        let candidates = JSON.parse(localStorage.getItem('vote_candidates')) || defaultCandidates;
-        // 每次刷新默认都是普通用户（不自动保存管理员权限）
-        let isAdmin = false; 
+        let candidates = JSON.parse(localStorage.getItem('party_vote_candidates_v4')) || defaultCandidates;
+        let isAdmin = false;
 
-        // 初始化
+        // 初始化运行
         document.addEventListener('DOMContentLoaded', () => {
             render();
             updateAdminUI();
         });
 
-        // 保存数据
+        // 持久化存储
         function saveData() {
-            localStorage.setItem('vote_candidates', JSON.stringify(candidates));
+            localStorage.setItem('party_vote_candidates_v4', JSON.stringify(candidates));
         }
 
         // 计算总票数
@@ -160,60 +250,134 @@
             return candidates.reduce((sum, item) => sum + item.votes, 0);
         }
 
-        // 渲染页面
+        // 重置党派筛选
+        function resetFilters() {
+            document.getElementById('filter-party').value = 'ALL';
+            render();
+        }
+
+        // 辅助切换自定义党派输入框
+        function toggleCustomPartyInput() {
+            const select = document.getElementById('new-party-select');
+            const customInput = document.getElementById('new-party-custom');
+            if (select.value === 'CUSTOM') {
+                customInput.classList.remove('hidden');
+                customInput.required = true;
+            } else {
+                customInput.classList.add('hidden');
+                customInput.required = false;
+            }
+        }
+
+        // 主渲染界面逻辑
         function render() {
             const grid = document.getElementById('candidate-grid');
+            const partyFilter = document.getElementById('filter-party').value;
+
+            // 根据党派过滤
+            const filtered = candidates.filter(c => partyFilter === 'ALL' || c.party === partyFilter);
+
             const totalVotes = getTotalVotes();
             
             document.getElementById('total-votes-count').innerText = totalVotes;
-            document.getElementById('total-candidates-count').innerText = candidates.length;
+            document.getElementById('total-candidates-count').innerText = filtered.length;
 
             grid.innerHTML = '';
 
-            candidates.forEach(c => {
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-panelbg border border-bordercolor rounded-2xl">
+                        <p class="text-textmuted text-sm">该党派分类下暂无候选人。</p>
+                        <p class="text-xs text-textmuted/60 mt-1">您可以登录管理员账号手动添加新候选人。</p>
+                    </div>`;
+                return;
+            }
+
+            filtered.forEach(c => {
                 const percent = totalVotes > 0 ? ((c.votes / totalVotes) * 100).toFixed(1) : 0;
-                const hasVoted = localStorage.getItem(`voted_${c.id}`);
+                const hasVoted = localStorage.getItem(`voted_p_${c.id}`);
+                const commentList = c.comments || [];
 
                 grid.innerHTML += `
-                    <div class="bg-panelbg border border-bordercolor rounded-xl overflow-hidden flex flex-col justify-between hover:border-accent/40 transition duration-300">
+                    <div class="bg-panelbg border border-bordercolor rounded-2xl overflow-hidden flex flex-col justify-between hover:border-accent/40 transition duration-300 shadow-xl">
                         <div>
-                            <div class="h-56 bg-darkbg overflow-hidden relative">
-                                <img src="${c.photo}" alt="${c.name}" class="w-full h-full object-cover object-center">
-                                <div class="absolute top-3 right-3 bg-darkbg/80 backdrop-blur px-2.5 py-1 rounded-full text-xs text-accent font-semibold border border-bordercolor">
+                            <!-- 头像照片区域 -->
+                            <div class="h-60 bg-darkbg overflow-hidden relative">
+                                <img src="${c.photo}" alt="${c.name}" class="w-full h-full object-cover object-top">
+                                
+                                <!-- 得票百分比徽章 -->
+                                <div class="absolute top-3 right-3 bg-darkbg/90 backdrop-blur px-3 py-1 rounded-full text-xs text-accent font-black border border-bordercolor">
                                     ${percent}%
                                 </div>
+
+                                <!-- 党派分类标签 -->
+                                <div class="absolute bottom-3 left-3">
+                                    <span class="bg-purple-600/90 backdrop-blur text-white font-medium text-[11px] px-3 py-1 rounded-md border border-purple-400/30 shadow-md">
+                                        ⚖️ ${c.party}
+                                    </span>
+                                </div>
                             </div>
+
+                            <!-- 个人信息 -->
                             <div class="p-5">
-                                <h3 class="text-xl font-bold text-textmain">${c.name}</h3>
-                                <p class="text-xs text-textmuted mt-1 min-h-[32px]">${c.title}</p>
+                                <h3 class="text-xl font-bold text-textmain tracking-wide">${c.name}</h3>
+                                <p class="text-xs text-textmuted mt-2 leading-relaxed min-h-[36px]">${c.title}</p>
                                 
-                                <div class="mt-4">
-                                    <div class="flex justify-between text-xs mb-1">
-                                        <span class="text-textmuted">获得得票</span>
+                                <div class="mt-4 bg-darkbg/40 p-3 rounded-xl border border-bordercolor/60">
+                                    <div class="flex justify-between text-xs mb-1.5">
+                                        <span class="text-textmuted">获得表决支持</span>
                                         <span class="font-bold text-accent">${c.votes} 票</span>
                                     </div>
                                     <div class="w-full bg-darkbg h-2 rounded-full overflow-hidden border border-bordercolor">
-                                        <div class="bg-accent h-full transition-all duration-500" style="width: ${percent}%"></div>
+                                        <div class="bg-accent h-full transition-all duration-500 rounded-full" style="width: ${percent}%"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="p-5 pt-0">
+                            <!-- 投票表决按钮 -->
                             <button onclick="userVote(${c.id})" ${hasVoted ? 'disabled' : ''} 
-                                class="w-full py-2.5 rounded-lg text-sm font-bold transition duration-200 
-                                ${hasVoted ? 'bg-bordercolor text-textmuted cursor-not-allowed' : 'bg-accent text-white hover:bg-blue-600 shadow-lg shadow-accent/20'}">
-                                ${hasVoted ? '已完成表决' : '投他一票'}
+                                class="w-full py-2.5 rounded-xl text-xs font-bold transition duration-200 mb-4 
+                                ${hasVoted ? 'bg-bordercolor text-textmuted cursor-not-allowed' : 'bg-accent hover:bg-accenthover text-white shadow-lg shadow-accent/20'}">
+                                ${hasVoted ? '✓ 已投表决票' : '投他一票'}
                             </button>
 
+                            <!-- 匿名留言互动区 -->
+                            <div class="border-t border-bordercolor/80 pt-3">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-textmain flex items-center gap-1">
+                                        <span>💬</span> 匿名表达讨论 (${commentList.length})
+                                    </span>
+                                </div>
+                                
+                                <!-- 留言展示区 -->
+                                <div class="max-h-32 overflow-y-auto space-y-2 mb-3 text-xs pr-1">
+                                    ${commentList.length === 0 ? '<p class="text-textmuted text-[11px] italic py-1">暂无表达，抢先发表观点...</p>' : ''}
+                                    ${commentList.map(item => `
+                                        <div class="bg-darkbg/80 p-2.5 rounded-lg border border-bordercolor/60">
+                                            <p class="text-textmain text-[11px] leading-snug">${escapeHtml(item.text)}</p>
+                                            <span class="text-[9px] text-textmuted block text-right mt-1">${item.time}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+
+                                <!-- 发表匿名留言输入框 -->
+                                <div class="flex gap-2">
+                                    <input type="text" id="comment-input-${c.id}" placeholder="撰写匿名表达评论..." class="flex-grow bg-darkbg border border-bordercolor rounded-lg px-3 py-1.5 text-xs text-textmain focus:outline-none focus:border-accent">
+                                    <button onclick="addComment(${c.id})" class="px-3 py-1.5 bg-accent/20 hover:bg-accent/40 text-accent border border-accent/30 rounded-lg text-xs font-medium transition">发送</button>
+                                </div>
+                            </div>
+
+                            <!-- 管理员专属修改票数/删除操作区 -->
                             ${isAdmin ? `
-                                <div class="mt-4 pt-3 border-t border-bordercolor/60 flex items-center justify-between gap-2">
-                                    <div class="flex items-center gap-1">
-                                        <span class="text-xs text-textmuted">改票:</span>
-                                        <input type="number" id="edit-votes-${c.id}" value="${c.votes}" class="w-20 bg-darkbg border border-bordercolor rounded px-2 py-1 text-xs text-textmain">
+                                <div class="mt-4 pt-3 border-t border-red-500/30 bg-red-950/10 -mx-5 -mb-5 p-3 px-5 flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[11px] text-textmuted">改票:</span>
+                                        <input type="number" id="edit-votes-${c.id}" value="${c.votes}" class="w-16 bg-darkbg border border-bordercolor rounded px-2 py-1 text-xs text-textmain">
                                         <button onclick="adminModifyVotes(${c.id})" class="px-2 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded text-xs hover:bg-amber-500/30">保存</button>
                                     </div>
-                                    <button onclick="adminDeleteCandidate(${c.id})" class="px-2 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded text-xs hover:bg-red-500/30">删除</button>
+                                    <button onclick="adminDeleteCandidate(${c.id})" class="px-2.5 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded text-xs hover:bg-red-500/40">删除候选人</button>
                                 </div>
                             ` : ''}
                         </div>
@@ -223,21 +387,48 @@
             saveData();
         }
 
-        // 网民投票
-        function userVote(id) {
+        // HTML转义，提高安全性
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // 发表匿名留言
+        function addComment(id) {
+            const input = document.getElementById(`comment-input-${id}`);
+            const text = input.value.trim();
+            if (!text) return;
+
             const cand = candidates.find(c => c.id === id);
             if (cand) {
-                cand.votes += 1;
-                localStorage.setItem(`voted_${id}`, 'true');
+                if (!cand.comments) cand.comments = [];
+                
+                const now = new Date();
+                const timeStr = `${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                cand.comments.push({
+                    text: text,
+                    time: timeStr
+                });
+
                 render();
             }
         }
 
-        // 管理员弹窗
+        // 匿名表决投票
+        function userVote(id) {
+            const cand = candidates.find(c => c.id === id);
+            if (cand) {
+                cand.votes += 1;
+                localStorage.setItem(`voted_p_${id}`, 'true');
+                render();
+            }
+        }
+
+        // 管理员控制弹窗
         function openAdminModal() { document.getElementById('login-modal').classList.remove('hidden'); }
         function closeAdminModal() { document.getElementById('login-modal').classList.add('hidden'); }
 
-        // 管理员登录（需输入设定的 ADMIN_PASSWORD 密码）
+        // 管理员登录验证
         function loginAdmin() {
             const pass = document.getElementById('admin-pass').value;
             if (pass === ADMIN_PASSWORD) {
@@ -245,9 +436,9 @@
                 closeAdminModal();
                 updateAdminUI();
                 render();
-                document.getElementById('admin-pass').value = ''; // 清空输入的密码
+                document.getElementById('admin-pass').value = '';
             } else {
-                alert('密码错误！');
+                alert('管理员密码不正确！');
             }
         }
 
@@ -258,49 +449,57 @@
         }
 
         function updateAdminUI() {
-            const btn = document.getElementById('admin-btn');
+            const btnText = document.getElementById('admin-btn-text');
             const panel = document.getElementById('admin-panel');
             if (isAdmin) {
-                btn.innerText = "已进入管理模式";
+                btnText.innerText = "已开启后台管理";
                 panel.classList.remove('hidden');
             } else {
-                btn.innerText = "管理员登录";
+                btnText.innerText = "管理员登录";
                 panel.classList.add('hidden');
             }
         }
 
-        // 管理员：添加候选人
+        // 管理员：动态添加新候选人（包含党派与照片上传）
         function handleCreateCandidate(e) {
             e.preventDefault();
             const name = document.getElementById('new-name').value;
+            const partySelect = document.getElementById('new-party-select').value;
+            const partyCustom = document.getElementById('new-party-custom').value;
+            const party = partySelect === 'CUSTOM' ? partyCustom : partySelect;
+            
             const title = document.getElementById('new-title').value;
             const votes = parseInt(document.getElementById('new-votes').value) || 0;
             const fileInput = document.getElementById('new-file');
 
-            const addCandidateWithPhoto = (photoUrl) => {
+            const createNewEntry = (photoUrl) => {
                 candidates.push({
                     id: Date.now(),
                     name,
+                    party,
                     title,
                     votes,
-                    photo: photoUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400"
+                    photo: photoUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400",
+                    comments: []
                 });
                 render();
                 e.target.reset();
+                toggleCustomPartyInput();
             };
 
+            // 如果选择了本地照片，自动读取并转换为 DataURL 保存展示
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function (evt) {
-                    addCandidateWithPhoto(evt.target.result);
+                    createNewEntry(evt.target.result);
                 };
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-                addCandidateWithPhoto();
+                createNewEntry();
             }
         }
 
-        // 管理员：手动改票数
+        // 管理员：修改票数
         function adminModifyVotes(id) {
             const val = parseInt(document.getElementById(`edit-votes-${id}`).value);
             const cand = candidates.find(c => c.id === id);
@@ -312,7 +511,7 @@
 
         // 管理员：删除候选人
         function adminDeleteCandidate(id) {
-            if (confirm("确定要删除该候选人吗？")) {
+            if (confirm("确认要删除该候选人吗？此操作无法撤销。")) {
                 candidates = candidates.filter(c => c.id !== id);
                 render();
             }
