@@ -3,364 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>亚洲极权与民族主义指数</title>
-    <!-- 引入 ECharts 核心库 -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-    <!-- 引入 世界地图数据 -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --panel-bg: #151c2c;
-            --border-color: #1e293b;
-            --accent-color: #3b82f6;
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            color: #ffffff;
-            margin-bottom: 6px;
-        }
-
-        p.subtitle {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 340px;
-            gap: 20px;
-        }
-
-        @media (max-width: 900px) {
-            .main-layout {
-                grid-template-columns: 1fr;
+    <title>中国大陆线上匿名选举平台</title>
+    <!-- Tailwind CSS 样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0b0f19',
+                        panelbg: '#151c2c',
+                        bordercolor: '#1e293b',
+                        accent: '#3b82f6',
+                        textmain: '#e2e8f0',
+                        textmuted: '#94a3b8'
+                    }
+                }
             }
         }
-
-        #map-container {
-            width: 100%;
-            height: 600px;
-            background: var(--panel-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-        }
-
-        .side-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .card h2 {
-            font-size: 1.1rem;
-            color: #ffffff;
-            margin-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .form-group input, 
-        .form-group select, 
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: #0f172a;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-main);
-            font-size: 0.9rem;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            height: 70px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 10px;
-            background: var(--accent-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-submit:hover {
-            background: #2563eb;
-        }
-
-        .legend-tip {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.4;
+    </script>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between">
 
-    <div class="container">
-        <header>
-            <h1>亚洲民族主义与法西斯主义指数分布图</h1>
-            <p class="subtitle">Asia Nationalism & Authoritarianism Severity Index Monitor</p>
-        </header>
+    <!-- 顶部导航 -->
+    <header class="border-b border-bordercolor bg-panelbg/80 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
+                <h1 class="text-xl font-bold tracking-wide text-textmain">民意表达与表决平台</h1>
+            </div>
+            <div>
+                <button id="admin-btn" onclick="openAdminModal()" class="px-4 py-2 text-sm bg-accent/20 hover:bg-accent/40 text-accent border border-accent/40 rounded-lg transition duration-200">
+                    管理员登录
+                </button>
+            </div>
+        </div>
+    </header>
 
-        <div class="main-layout">
-            <!-- 左侧：亚洲区域地图 -->
-            <div id="map-container"></div>
-
-            <!-- 右侧：投稿/数据修改入口 -->
-            <div class="side-panel">
-                <div class="card">
-                    <h2>数据更新/投稿入口</h2>
-                    <form id="submission-form" onsubmit="handleFormSubmit(event)">
-                        <div class="form-group">
-                            <label for="country-select">选择国家/地区：</label>
-                            <select id="country-select" required>
-                                <option value="">请选择...</option>
-                                <option value="China">中国 (China)</option>
-                                <option value="Japan">日本 (Japan)</option>
-                                <option value="South Korea">韩国 (South Korea)</option>
-                                <option value="India">印度 (India)</option>
-                                <option value="Russia">俄罗斯（亚洲部分） (Russia)</option>
-                                <option value="Turkey">土耳其 (Turkey)</option>
-                                <option value="Iran">伊朗 (Iran)</option>
-                                <option value="North Korea">朝鲜 (North Korea)</option>
-                                <option value="Vietnam">越南 (Vietnam)</option>
-                                <option value="Thailand">泰国 (Thailand)</option>
-                                <option value="Indonesia">印度尼西亚 (Indonesia)</option>
-                                <option value="Pakistan">巴基斯坦 (Pakistan)</option>
-                                <option value="Saudi Arabia">沙特阿拉伯 (Saudi Arabia)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="index-value">修改/设定指数 (0 - 100)：</label>
-                            <input type="number" id="index-value" min="0" max="100" placeholder="例如: 75" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="submit-reason">投稿依据 / 说明：</label>
-                            <textarea id="submit-reason" placeholder="请输入相关事件或评估依据..."></textarea>
-                        </div>
-
-                        <button type="submit" class="btn-submit">更新地图预览 / 提交</button>
-                    </form>
+    <!-- 主体区域 -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <!-- 统计概览条 -->
+        <div class="bg-panelbg border border-bordercolor rounded-xl p-6 mb-8 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-textmain">下任最高领导人 / 决策层意向表决</h2>
+                <p class="text-sm text-textmuted mt-1">公开民意调查与模拟投票系统（匿名、实时汇总）</p>
+            </div>
+            <div class="flex items-center space-x-6 text-right">
+                <div>
+                    <span class="text-xs text-textmuted block">总投票数</span>
+                    <span id="total-votes-count" class="text-2xl font-extrabold text-accent">0</span>
                 </div>
-
-                <div class="card">
-                    <h2>关于颜色与指数</h2>
-                    <p class="legend-tip">
-                        • <b>指数 0-20：</b> 蓝色（低风险/极低极权）<br>
-                        • <b>指数 20-50：</b> 黄色（中度民族主义倾向）<br>
-                        • <b>指数 50-80：</b> 橙色（高风险/强威权主义）<br>
-                        • <b>指数 80-100：</b> 深红/紫色（极高风险/法西斯主义倾向）<br><br>
-                        可以在代码中修改 <code>visualMap.inRange.color</code> 来自由调整深浅颜色的渐变方案。
-                    </p>
+                <div>
+                    <span class="text-xs text-textmuted block">候选人数</span>
+                    <span id="total-candidates-count" class="text-2xl font-extrabold text-textmain">0</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- 管理员控制面板（登录后显示） -->
+        <div id="admin-panel" class="hidden bg-panelbg border border-accent/50 rounded-xl p-6 mb-8 shadow-lg shadow-accent/5">
+            <div class="flex justify-between items-center mb-4 border-b border-bordercolor pb-3">
+                <h3 class="text-lg font-bold text-accent flex items-center gap-2">
+                    <span>⚙️</span> 管理员控制后台
+                </h3>
+                <button onclick="logoutAdmin()" class="text-xs px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded hover:bg-red-500/30">
+                    退出管理
+                </button>
+            </div>
+
+            <!-- 添加候选人表单 -->
+            <form onsubmit="handleCreateCandidate(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs text-textmuted mb-1">候选人姓名</label>
+                    <input type="text" id="new-name" required placeholder="例如：张三" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs text-textmuted mb-1">竞选头衔 / 政治立场</label>
+                    <input type="text" id="new-title" required placeholder="例如：代表名称/政党观点" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs text-textmuted mb-1">初始票数</label>
+                    <input type="number" id="new-votes" placeholder="默认 0" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs text-textmuted mb-1">头像图片 (文件或URL)</label>
+                    <input type="file" id="new-file" accept="image/*" class="w-full text-xs text-textmuted file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-accent/20 file:text-accent">
+                </div>
+                <div class="md:col-span-2 lg:col-span-4 flex justify-end">
+                    <button type="submit" class="px-6 py-2 bg-accent text-white font-medium rounded-lg hover:bg-blue-600 transition duration-200 text-sm">
+                        + 添加新候选人
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 候选人列表卡片区域 -->
+        <div id="candidate-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 动态生成卡片 -->
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="border-t border-bordercolor py-6 text-center text-xs text-textmuted">
+        <p>© 2026 民意表达与去中心化论坛模拟平台 | 仅用于交流与民意测验</p>
+    </footer>
+
+    <!-- 管理员登录弹窗 -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="bg-panelbg border border-bordercolor p-6 rounded-xl w-96 max-w-full shadow-2xl">
+            <h3 class="text-lg font-bold text-textmain mb-4">管理员登录</h3>
+            <p class="text-xs text-textmuted mb-4">请输入管理员密码以进行管理与数据修改。</p>
+            <input type="password" id="admin-pass" placeholder="请输入密码 (默认: admin)" class="w-full bg-darkbg border border-bordercolor rounded px-3 py-2 text-sm text-textmain mb-4 focus:outline-none focus:border-accent">
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeAdminModal()" class="px-4 py-2 text-xs bg-darkbg text-textmuted border border-bordercolor rounded hover:bg-bordercolor">取消</button>
+                <button onclick="loginAdmin()" class="px-4 py-2 text-xs bg-accent text-white rounded hover:bg-blue-600">确认登录</button>
             </div>
         </div>
     </div>
 
+    <!-- 脚本逻辑 -->
     <script>
-        const chartDom = document.getElementById('map-container');
-        const myChart = echarts.init(chartDom, 'dark');
-
-        // 国家英文到中文的映射
-        const nameMap = {
-            'China': '中国',
-            'Japan': '日本',
-            'South Korea': '韩国',
-            'North Korea': '朝鲜',
-            'India': '印度',
-            'Pakistan': '巴基斯坦',
-            'Russia': '俄罗斯',
-            'Turkey': '土耳其',
-            'Iran': '伊朗',
-            'Saudi Arabia': '沙特阿拉伯',
-            'Vietnam': '越南',
-            'Thailand': '泰国',
-            'Indonesia': '印度尼西亚',
-            'Mongolia': '蒙古',
-            'Kazakhstan': '哈萨克斯坦',
-            'Philippines': '菲律宾',
-            'Myanmar': '缅甸',
-            'Malaysia': '马来西亚'
-        };
-
-        // 初始地图数据（国家英文名与指数 0-100）
-        let mapData = [
-            { name: 'China', value: 75 },
-            { name: 'Japan', value: 25 },
-            { name: 'South Korea', value: 35 },
-            { name: 'North Korea', value: 98 },
-            { name: 'India', value: 72 },
-            { name: 'Russia', value: 88 },
-            { name: 'Turkey', value: 78 },
-            { name: 'Iran', value: 85 },
-            { name: 'Saudi Arabia', value: 65 },
-            { name: 'Vietnam', value: 60 },
-            { name: 'Thailand', value: 50 },
-            { name: 'Indonesia', value: 45 },
-            { name: 'Pakistan', value: 70 }
+        // 初始示例数据
+        const defaultCandidates = [
+            { id: 1, name: "模拟候选人 A", title: "主张改革与开放路线", votes: 120, photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" },
+            { id: 2, name: "模拟候选人 B", title: "主张传统与稳健路线", votes: 85, photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400" }
         ];
 
-        // 地图配置（聚焦亚洲区域）
-        function getOption() {
-            return {
-                backgroundColor: '#151c2c',
-                title: {
-                    text: '亚洲极权与民族主义严重程度地图',
-                    subtext: '拖拽可移动，滚轮可缩放',
-                    left: '20',
-                    top: '20',
-                    textStyle: { color: '#f8fafc', fontSize: 16 },
-                    subtextStyle: { color: '#64748b', fontSize: 12 }
-                },
-                tooltip: {
-                    trigger: 'item',
-                    formatter: function (params) {
-                        const val = params.value !== undefined && !isNaN(params.value) ? params.value : '暂无数据';
-                        const cName = nameMap[params.name] || params.name;
-                        return `<strong>${cName} (${params.name})</strong><br/>民族主义/极权指数: <span style="color:#ef4444;font-weight:bold;">${val}</span>`;
-                    }
-                },
-                // 颜色与数值控制（修改这里的 inRange 数组可以改变颜色的深浅和配色）
-                visualMap: {
-                    min: 0,
-                    max: 100,
-                    left: '20',
-                    bottom: '20',
-                    text: ['高指数 (100)', '低指数 (0)'],
-                    textStyle: { color: '#94a3b8' },
-                    realtime: true,
-                    calculable: true,
-                    // 颜色颜色深浅数组：从低指数到高指数的渐变颜色
-                    inRange: {
-                        color: ['#38bdf8', '#fbbf24', '#f97316', '#ef4444', '#701a75']
-                    }
-                },
-                geo: {
-                    map: 'world',
-                    roam: true,
-                    // 通过 center 和 zoom 属性限定聚焦在亚洲区域
-                    center: [100.0, 35.0], 
-                    zoom: 2.5,
-                    nameMap: nameMap,
-                    itemStyle: {
-                        normal: {
-                            areaColor: '#1e293b',
-                            borderColor: '#334155',
-                            borderWidth: 0.8
-                        },
-                        emphasis: {
-                            areaColor: '#3b82f6',
-                            borderColor: '#ffffff',
-                            borderWidth: 1.5,
-                            label: { show: false }
-                        }
-                    }
-                },
-                series: [
-                    {
-                        name: 'Asia Index',
-                        type: 'map',
-                        geoIndex: 0,
-                        data: mapData
-                    }
-                ]
-            };
-        }
+        let candidates = JSON.parse(localStorage.getItem('vote_candidates')) || defaultCandidates;
+        let isAdmin = localStorage.getItem('is_admin') === 'true';
 
-        // 初始化渲染
-        myChart.setOption(getOption());
-
-        // 表单提交处理：用于预览动态修改数值和颜色深浅
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const country = document.getElementById('country-select').value;
-            const newValue = parseInt(document.getElementById('index-value').value, 10);
-
-            if (!country || isNaN(newValue)) return;
-
-            // 寻找或新增数据项
-            const existing = mapData.find(item => item.name === country);
-            if (existing) {
-                existing.value = newValue;
-            } else {
-                mapData.push({ name: country, value: newValue });
-            }
-
-            // 重新刷新地图
-            myChart.setOption({
-                series: [{
-                    data: mapData
-                }]
-            });
-
-            alert(`${nameMap[country] || country} 的指数已更新为 ${newValue}！地图颜色已相应变化。`);
-            document.getElementById('submission-form').reset();
-        }
-
-        // 自适应屏幕大小
-        window.addEventListener('resize', function () {
-            myChart.resize();
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            render();
+            updateAdminUI();
         });
+
+        // 保存数据
+        function saveData() {
+            localStorage.setItem('vote_candidates', JSON.stringify(candidates));
+        }
+
+        // 计算总票数
+        function getTotalVotes() {
+            return candidates.reduce((sum, item) => sum + item.votes, 0);
+        }
+
+        // 渲染页面
+        function render() {
+            const grid = document.getElementById('candidate-grid');
+            const totalVotes = getTotalVotes();
+            
+            document.getElementById('total-votes-count').innerText = totalVotes;
+            document.getElementById('total-candidates-count').innerText = candidates.length;
+
+            grid.innerHTML = '';
+
+            candidates.forEach(c => {
+                const percent = totalVotes > 0 ? ((c.votes / totalVotes) * 100).toFixed(1) : 0;
+                const hasVoted = localStorage.getItem(`voted_${c.id}`);
+
+                grid.innerHTML += `
+                    <div class="bg-panelbg border border-bordercolor rounded-xl overflow-hidden flex flex-col justify-between hover:border-accent/40 transition duration-300">
+                        <div>
+                            <div class="h-56 bg-darkbg overflow-hidden relative">
+                                <img src="${c.photo}" alt="${c.name}" class="w-full h-full object-cover object-center">
+                                <div class="absolute top-3 right-3 bg-darkbg/80 backdrop-blur px-2.5 py-1 rounded-full text-xs text-accent font-semibold border border-bordercolor">
+                                    ${percent}%
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="text-xl font-bold text-textmain">${c.name}</h3>
+                                <p class="text-xs text-textmuted mt-1 min-h-[32px]">${c.title}</p>
+                                
+                                <div class="mt-4">
+                                    <div class="flex justify-between text-xs mb-1">
+                                        <span class="text-textmuted">获得得票</span>
+                                        <span class="font-bold text-accent">${c.votes} 票</span>
+                                    </div>
+                                    <div class="w-full bg-darkbg h-2 rounded-full overflow-hidden border border-bordercolor">
+                                        <div class="bg-accent h-full transition-all duration-500" style="width: ${percent}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-5 pt-0">
+                            <button onclick="userVote(${c.id})" ${hasVoted ? 'disabled' : ''} 
+                                class="w-full py-2.5 rounded-lg text-sm font-bold transition duration-200 
+                                ${hasVoted ? 'bg-bordercolor text-textmuted cursor-not-allowed' : 'bg-accent text-white hover:bg-blue-600 shadow-lg shadow-accent/20'}">
+                                ${hasVoted ? '已完成表决' : '投他一票'}
+                            </button>
+
+                            ${isAdmin ? `
+                                <div class="mt-4 pt-3 border-t border-bordercolor/60 flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs text-textmuted">改票:</span>
+                                        <input type="number" id="edit-votes-${c.id}" value="${c.votes}" class="w-20 bg-darkbg border border-bordercolor rounded px-2 py-1 text-xs text-textmain">
+                                        <button onclick="adminModifyVotes(${c.id})" class="px-2 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded text-xs hover:bg-amber-500/30">保存</button>
+                                    </div>
+                                    <button onclick="adminDeleteCandidate(${c.id})" class="px-2 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded text-xs hover:bg-red-500/30">删除</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            saveData();
+        }
+
+        // 网民投票
+        function userVote(id) {
+            const cand = candidates.find(c => c.id === id);
+            if (cand) {
+                cand.votes += 1;
+                localStorage.setItem(`voted_${id}`, 'true');
+                render();
+            }
+        }
+
+        // 管理员弹窗
+        function openAdminModal() { document.getElementById('login-modal').classList.remove('hidden'); }
+        function closeAdminModal() { document.getElementById('login-modal').classList.add('hidden'); }
+
+        // 管理员登录（默认密码 admin）
+        function loginAdmin() {
+            const pass = document.getElementById('admin-pass').value;
+            if (pass === 'admin') {
+                isAdmin = true;
+                localStorage.setItem('is_admin', 'true');
+                closeAdminModal();
+                updateAdminUI();
+                render();
+            } else {
+                alert('密码错误！默认密码为: admin');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            localStorage.setItem('is_admin', 'false');
+            updateAdminUI();
+            render();
+        }
+
+        function updateAdminUI() {
+            const btn = document.getElementById('admin-btn');
+            const panel = document.getElementById('admin-panel');
+            if (isAdmin) {
+                btn.innerText = "已进入管理模式";
+                panel.classList.remove('hidden');
+            } else {
+                btn.innerText = "管理员登录";
+                panel.classList.add('hidden');
+            }
+        }
+
+        // 管理员：添加候选人
+        function handleCreateCandidate(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-name').value;
+            const title = document.getElementById('new-title').value;
+            const votes = parseInt(document.getElementById('new-votes').value) || 0;
+            const fileInput = document.getElementById('new-file');
+
+            const addCandidateWithPhoto = (photoUrl) => {
+                candidates.push({
+                    id: Date.now(),
+                    name,
+                    title,
+                    votes,
+                    photo: photoUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400"
+                });
+                render();
+                e.target.reset();
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    addCandidateWithPhoto(evt.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                addCandidateWithPhoto();
+            }
+        }
+
+        // 管理员：手动改票数
+        function adminModifyVotes(id) {
+            const val = parseInt(document.getElementById(`edit-votes-${id}`).value);
+            const cand = candidates.find(c => c.id === id);
+            if (cand && !isNaN(val)) {
+                cand.votes = val;
+                render();
+            }
+        }
+
+        // 管理员：删除候选人
+        function adminDeleteCandidate(id) {
+            if (confirm("确定要删除该候选人吗？")) {
+                candidates = candidates.filter(c => c.id !== id);
+                render();
+            }
+        }
     </script>
 </body>
 </html>
