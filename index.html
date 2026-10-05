@@ -55,4 +55,31 @@
             </div>
             <div class="flex items-center space-x-6 text-right">
                 <div>
-                    <span class="text-xs text-textmuted block">
+                    <span class="text-xs text-textmuted block">总投票数</span>
+                    <span id="total-votes-count" class="text-2xl font-extrabold text-accent">0</span>
+                </div>
+                <div>
+                    <span class="text-xs text-textmuted block">展示候选人数</span>
+                    <span id="total-candidates-count" class="text-2xl font-extrabold text-textmain">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 党派筛选栏 -->
+        <div class="bg-panelbg border border-bordercolor rounded-xl p-4 mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <label class="text-xs text-textmuted">按党派/身份筛选:</label>
+                <select id="filter-party" onchange="render()" class="bg-darkbg border border-bordercolor rounded px-3 py-1.5 text-xs text-textmain focus:outline-none focus:border-accent">
+                    <option value="ALL">全部党派与无党派</option>
+                    <option value="无党派人士">无党派人士</option>
+                    <option value="中国共产党">中国共产党</option>
+                    <option value="各民主党派">各民主党派</option>
+                    <option value="海外民主党派/新政党">海外民主党派 / 新政党</option>
+                </select>
+            </div>
+            <button onclick="resetFilters()" class="text-xs text-accent hover:underline">显示全部候选人</button>
+        </div>
+
+        <!-- 管理员控制面板（登录后显示） -->
+        <div id="admin-panel" class="hidden bg-panelbg border border-accent/50 rounded-xl p-6 mb-8 shadow-lg shadow-accent/5">
+            <div class="flex justify-
