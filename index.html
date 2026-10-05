@@ -39,11 +39,6 @@
                 <div class="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
                 <h1 class="text-xl font-bold tracking-wide text-textmain">中国大陆海外匿名选举平台</h1>
             </div>
-            <div>
-                <button id="admin-btn" onclick="openAdminModal()" class="px-4 py-2 text-sm bg-accent/20 hover:bg-accent/40 text-accent border border-accent/40 rounded-lg transition duration-200">
-                    管理员登录
-                </button>
-            </div>
         </div>
     </header>
 
@@ -144,8 +139,15 @@
     </main>
 
     <!-- 底部 -->
-    <footer class="border-t border-bordercolor py-6 text-center text-xs text-textmuted">
-        <p>© 2026 中国大陆海外匿名选举平台 | 仅用于民间民意表达与表决模拟</p>
+    <footer class="border-t border-bordercolor py-6 text-xs text-textmuted">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>© 2026 中国大陆海外匿名选举平台 | 仅用于民间民意表达与表决模拟</p>
+            <div>
+                <button id="admin-btn" onclick="openAdminModal()" class="text-[11px] text-textmuted hover:text-accent opacity-60 hover:opacity-100 transition duration-200">
+                    管理员登录
+                </button>
+            </div>
+        </div>
     </footer>
 
     <!-- 管理员登录弹窗 -->
@@ -247,6 +249,9 @@
 
             // 按党派过滤
             const filtered = candidates.filter(c => partyFilter === 'ALL' || c.party === partyFilter);
+
+            // 按票数高低进行降序排序
+            filtered.sort((a, b) => b.votes - a.votes);
 
             const totalVotes = getTotalVotes();
             
