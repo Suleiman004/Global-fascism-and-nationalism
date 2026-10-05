@@ -141,7 +141,11 @@
     <!-- 底部 -->
     <footer class="border-t border-bordercolor py-6 text-xs text-textmuted">
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p>© 2026 中国大陆海外匿名选举平台 | 仅用于民间民意表达与表决模拟</p>
+            <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+                <p>© 2026 中国大陆海外匿名选举平台 | 仅用于民间民意表达与表决模拟</p>
+                <span class="hidden md:inline text-bordercolor">|</span>
+                <p class="text-textmain font-medium">联系我们，邮箱：<a href="mailto:SBGCD1949@hotmail.com" class="text-accent hover:underline">SBGCD1949@hotmail.com</a></p>
+            </div>
             <div>
                 <button id="admin-btn" onclick="openAdminModal()" class="text-[11px] text-textmuted hover:text-accent opacity-60 hover:opacity-100 transition duration-200">
                     管理员登录
